@@ -3,7 +3,6 @@ import * as CANNON from 'cannon-es'
 import {Sphere} from './models/sphere.ts'
 import {Cube} from "./models/cube.ts";
 import {ControllableCamera} from "./models/controllableCamera.ts";
-import {Cow} from "./models/cow.ts";
 
 
 // Create a scene
@@ -38,8 +37,6 @@ const cube = new Cube(5, 0, { x: 0, y: -5, z: 0 }, 0xff0000);
 scene.add(cube.mesh);
 world.addBody(cube.body);
 
-
-const cow = new Cow({ x: 0, y: -5, z: 0 }, scene);
 
 // Animation loop
 function animate() {
