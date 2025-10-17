@@ -8,7 +8,7 @@ export class Pawn {
 
     constructor(position: { x: number; y: number; z: number }) {
 
-        ModelLoader.getModelClone(ModelName.BLACK_PAWN).then((model) => {
+        ModelLoader.getModelClone(ModelName.BLACK_PAWN_E).then((model) => {
             this._mesh = model;
             this._mesh.position.set(position.x, position.y, position.z);
         });

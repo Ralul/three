@@ -1,4 +1,3 @@
-// src/main.ts
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 import {ModelLoader} from './utils/model-loader.ts';
@@ -85,12 +84,12 @@ console.log('All models loaded');
 
 
 // Create a piece
-const blackKing = new Piece(ModelName.BLACK_KING);
+const blackKing = new Piece(ModelName.BLACK_BISHOP);
 await blackKing.load();
 blackKing.setPosition(0, 0, 0);
 scene.add(blackKing.mesh);
 
-const whiteQueen = new Piece(ModelName.WHITE_QUEEN);
+const whiteQueen = new Piece(ModelName.BLACK_BISHOP);
 await whiteQueen.load();
 whiteQueen.setPosition(2, 0, 0);
 scene.add(whiteQueen.mesh);
