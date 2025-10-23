@@ -2,10 +2,11 @@ import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 import {ModelLoader} from './utils/model-loader.ts';
 import {ModelName} from './types/model-name.ts';
-import {Piece} from './models/piece.ts';
+import {Board} from "./models/board.ts";
+import {FenLoader} from "./fen-loader.ts";
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x808080);
+scene.background = new THREE.Color(0xc6b7a4);
 
 // Camera + renderer
 const camera = new THREE.PerspectiveCamera(
@@ -26,9 +27,20 @@ controls.enableDamping = true;
 controls.target.set(0, 0.5, 0);
 
 // Light
-const light = new THREE.DirectionalLight(0xffffff);
-light.position.set(0.5, 10, 10);
-scene.add(light);
+const lightH8 = new THREE.DirectionalLight(0xffffff);
+lightH8.position.set(2, 2, 2);
+scene.add(lightH8);
+const lightH1 = new THREE.DirectionalLight(0xffffff);
+lightH1.position.set(-2, 2, 2);
+scene.add(lightH1);
+
+const lightA1 = new THREE.DirectionalLight(0xffffff);
+lightA1.position.set(-2, 2, -2);
+scene.add(lightA1);
+
+const lightA8 = new THREE.DirectionalLight(0xffffff);
+lightA8.position.set(2, 2, -2);
+scene.add(lightA8);
 
 const modelEntries: [string, ModelName][] = [
     ['/models/black_bishop.gltf', ModelName.BLACK_BISHOP],
@@ -82,24 +94,20 @@ await Promise.all(
 console.log('All models loaded');
 
 
+// Create Board
+const board = new Board();
+await board.load();
+board.setPosition(0,0,0);
+scene.add(board.mesh)
 
-// Create a piece
-const blackKing = new Piece(ModelName.BLACK_BISHOP);
-await blackKing.load();
-blackKing.setPosition(0, 0, 0);
-scene.add(blackKing.mesh);
+await FenLoader.load(board, scene, "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
 
-const whiteQueen = new Piece(ModelName.BLACK_BISHOP);
-await whiteQueen.load();
-whiteQueen.setPosition(2, 0, 0);
-scene.add(whiteQueen.mesh);
-
-// --- 🧮 SETUP FOR CLICK DETECTION ---
+// --- SETUP FOR CLICK DETECTION ---
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
 // Keep track of clickable meshes
-const clickableMeshes: THREE.Object3D[] = [blackKing.mesh, whiteQueen.mesh];
+const clickableMeshes: THREE.Object3D[] = [];
 
 // Animate
 const clock = new THREE.Clock();
@@ -108,8 +116,7 @@ function animate() {
     requestAnimationFrame(animate);
     const dt = clock.getDelta();
 
-    blackKing.update(dt);
-    whiteQueen.update(dt);
+    //blackKing.update(dt);
 
     controls.update();
     renderer.render(scene, camera);

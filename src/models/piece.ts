@@ -1,16 +1,18 @@
-// src/models/piece.ts
 import * as THREE from 'three';
 import { ModelLoader } from '../utils/model-loader';
 import { ModelName } from '../types/model-name.ts';
+import {ColorType} from "../types/color-type.ts";
 
 export class Piece {
     private _mesh: THREE.Object3D;
     private _modelName: ModelName;
     private _isSelected = false;
+    private _color: ColorType;
 
-    constructor(modelName: ModelName) {
+    constructor(modelName: ModelName, color: ColorType) {
         this._modelName = modelName;
         this._mesh = new THREE.Object3D();
+        this._color = color;
     }
 
     public get mesh(): THREE.Object3D {
@@ -52,5 +54,14 @@ export class Piece {
             // e.g. make it spin slightly
             this._mesh.rotation.y += Math.PI * deltaTime;
         }
+    }
+
+
+    get isSelected(): boolean {
+        return this._isSelected;
+    }
+
+    get color(): ColorType {
+        return this._color;
     }
 }
