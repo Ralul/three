@@ -15,9 +15,9 @@ export class AssetLoader {
 
     private static updateProgress() {
         this.completedTasks++;
-        const percent = (this.completedTasks / (this.totalTasks +32)) * 100;
+        const percent = (this.completedTasks / (this.totalTasks)) * 100;
         if (this.onProgress) this.onProgress(percent);
-        console.log(percent);
+        console.log(percent.toFixed(2));
     }
 
     public static async loadAll(

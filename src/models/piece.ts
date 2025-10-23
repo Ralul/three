@@ -28,6 +28,7 @@ export class Piece {
      */
     public async load(): Promise<void> {
         const model = await ModelLoader.getModelClone(this._modelName);
+        this._mesh.userData.piece = this
         this._mesh.add(model);
     }
 

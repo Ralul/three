@@ -3,6 +3,7 @@ import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 import {ModelName} from './types/model-name.ts';
 import {Board} from "./models/board.ts";
 import {AssetLoader} from "./utils/asset-loader.ts";
+import {getBoardSquareFromCoords} from "./utils/board-mapper.ts";
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xc6b7a4);
@@ -80,7 +81,7 @@ await AssetLoader.loadAll(
     modelEntries,
     board,
     scene,
-    "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
+    "8/8/8/8/8/8/8/8"
 );
 
 
@@ -89,39 +90,64 @@ const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
 // Keep track of clickable meshes
-const clickableMeshes: THREE.Object3D[] = [];
-
-// Animate
+const clickableMeshes: THREE.Object3D[] = board.getAllPieces().map((p) => p.mesh);
 
 function animate() {
     requestAnimationFrame(animate);
 
-    //blackKing.update(dt);
-
     controls.update();
     renderer.render(scene, camera);
 }
-
 animate();
 
-// Handle click
+
+const boardSize = 8;
+const squareSize = 1;
+const boardPlane = new THREE.Mesh(
+    new THREE.PlaneGeometry(boardSize * squareSize, boardSize * squareSize),
+    new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0 }) // invisible
+);
+boardPlane.rotation.x = -Math.PI / 2; // make it horizontal
+scene.add(boardPlane);
+
 window.addEventListener('click', (event) => {
-    // Convert mouse position to normalized device coordinates (-1 to +1)
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-    // Update the raycaster
     raycaster.setFromCamera(mouse, camera);
 
-    // Compute intersections with your pieces
+    const intersects = raycaster.intersectObject(boardPlane, false);
+
+    if (intersects.length > 0) {
+        const point = intersects[0].point; // intersection point on the plane
+        const boardSquare = getBoardSquareFromCoords(point);
+        console.log('Clicked on board square:', boardSquare);
+    }
+});
+
+// Handle click
+window.addEventListener('click', (event) => {
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, camera);
     const intersects = raycaster.intersectObjects(clickableMeshes, true);
 
     if (intersects.length > 0) {
-        const firstHit = intersects[0].object;
-        console.log('Clicked on piece:', firstHit);
-        console.log('Parent piece object:', firstHit.parent);
+        const firstHitObject = intersects[0].object;
 
+        let current: THREE.Object3D | null = firstHitObject;
+        while (current && !current.userData.piece) {
+            current = current.parent;
+        }
 
+        const piece = current?.userData.piece;
+        if (piece) {
+            console.log('Clicked on piece:', piece);
+            console.log('Piece type:', piece.constructor.name);
+        } else {
+            console.log('Hit something with no piece data.');
+        }
     } else {
         console.log('Clicked on empty space.');
     }

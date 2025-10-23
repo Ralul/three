@@ -67,19 +67,16 @@ export class FenLoader {
                         break;
                 }
 
-                // Wait for model to load
                 if (piece) {
                     await piece.load();
                     board.setPiece(piece, row, col);
                     scene.add(piece.mesh);
-
                 }
-                if (trackProgress) {
-                    trackProgress();
-                }
-
                 col++;
             }
+        }
+        if (trackProgress) {
+            trackProgress();
         }
     }
 }

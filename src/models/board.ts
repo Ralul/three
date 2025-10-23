@@ -36,6 +36,18 @@ export class Board {
         return this._grid;
     }
 
+    public getAllPieces(): Piece[] {
+        const pieces: Piece[] = [];
+        for (const row of this._grid) {
+            for (const piece of row) {
+                if (piece !== null) {
+                    pieces.push(piece);
+                }
+            }
+        }
+        return pieces;
+    }
+
     /**
      * Set the position of this piece on the board.
      */
