@@ -1,9 +1,8 @@
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
-import {ModelLoader} from './utils/model-loader.ts';
 import {ModelName} from './types/model-name.ts';
 import {Board} from "./models/board.ts";
-import {FenLoader} from "./fen-loader.ts";
+import {AssetLoader} from "./utils/asset-loader.ts";
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xc6b7a4);
@@ -72,35 +71,18 @@ const modelEntries: [string, ModelName][] = [
     ['/models/white_rook.gltf', ModelName.WHITE_ROOK],
 ]
 
-let totalModels = modelEntries.length;
-const progressMap: Record<string, number> = {};
-
-function logProgress() {
-    const totalProgress =
-        Object.values(progressMap).reduce((a, b) => a + b, 0) / totalModels;
-    console.log(`Loading progress: ${totalProgress.toFixed(2)}%`);
-}
-
-// --- Load all models ---
-await Promise.all(
-    modelEntries.map(([path, name]) =>
-        ModelLoader.loadModel(path, name, (modelName, pct) => {
-            progressMap[modelName] = pct;
-            logProgress();
-        })
-    )
-);
-
-console.log('All models loaded');
-
-
 // Create Board
 const board = new Board();
-await board.load();
 board.setPosition(0,0,0);
 scene.add(board.mesh)
 
-await FenLoader.load(board, scene, "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
+await AssetLoader.loadAll(
+    modelEntries,
+    board,
+    scene,
+    "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
+);
+
 
 // --- SETUP FOR CLICK DETECTION ---
 const raycaster = new THREE.Raycaster();
@@ -110,11 +92,9 @@ const mouse = new THREE.Vector2();
 const clickableMeshes: THREE.Object3D[] = [];
 
 // Animate
-const clock = new THREE.Clock();
 
 function animate() {
     requestAnimationFrame(animate);
-    const dt = clock.getDelta();
 
     //blackKing.update(dt);
 
@@ -141,12 +121,7 @@ window.addEventListener('click', (event) => {
         console.log('Clicked on piece:', firstHit);
         console.log('Parent piece object:', firstHit.parent);
 
-        // Optionally: highlight or mark it as selected
-        if (firstHit.parent === blackKing.mesh) {
-            console.log('You clicked the Black King!');
-        } else if (firstHit.parent === whiteQueen.mesh) {
-            console.log('You clicked the White Queen!');
-        }
+
     } else {
         console.log('Clicked on empty space.');
     }

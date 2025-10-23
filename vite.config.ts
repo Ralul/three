@@ -7,6 +7,7 @@ export default defineConfig({
             input: {
                 main: resolve(__dirname, "index.html"),
                 chess: resolve(__dirname, "chess.html"),
+                login: resolve(__dirname, "login.html"),
             },
         },
     },

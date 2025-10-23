@@ -1,19 +1,20 @@
-import type { Board } from "./models/board.ts";
-import { Scene } from "three";
-import { Piece } from "./models/piece.ts";
-import { Pawn } from "./models/pawn.ts";
-import { Knight } from "./models/knight.ts";
-import { Bishop } from "./models/bishop.ts";
-import { Rook } from "./models/rook.ts";
-import { Queen } from "./models/queen.ts";
-import { King } from "./models/king.ts";
-import { ColorType } from "./types/color-type.ts";
+import type {Board} from "../models/board.ts";
+import {Scene} from "three";
+import {Piece} from "../models/piece.ts";
+import {Pawn} from "../models/pawn.ts";
+import {Knight} from "../models/knight.ts";
+import {Bishop} from "../models/bishop.ts";
+import {Rook} from "../models/rook.ts";
+import {Queen} from "../models/queen.ts";
+import {King} from "../models/king.ts";
+import {ColorType} from "../types/color-type.ts";
 
 export class FenLoader {
     public static async load(
         board: Board,
         scene: Scene,
-        fen: string
+        fen: string,
+        trackProgress?: () => void
     ): Promise<void> {
         // Example FEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
         const rows = fen.split(" ")[0].split("/");
@@ -71,6 +72,10 @@ export class FenLoader {
                     await piece.load();
                     board.setPiece(piece, row, col);
                     scene.add(piece.mesh);
+
+                }
+                if (trackProgress) {
+                    trackProgress();
                 }
 
                 col++;
