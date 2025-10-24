@@ -48,6 +48,14 @@ export class Board {
         return pieces;
     }
 
+    public getPieceByPositon(row: number, col: number) {
+        return this._grid[row][col];
+    }
+
+    public movePiece(): void {
+
+    }
+
     /**
      * Set the position of this piece on the board.
      */

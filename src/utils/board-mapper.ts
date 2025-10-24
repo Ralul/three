@@ -1,8 +1,11 @@
+import type {ChessSquare} from "../types/chess-position.ts";
+import * as THREE from 'three';
+
 /**
  * Converts a Three.js position on the board plane into a chessboard coordinate (like "e4").
  * Assumes (0,0) is center and +z points toward rank 8.
  */
-export function getBoardSquareFromCoords(point: THREE.Vector3): string | null {
+export function getBoardSquareFromCoords(point: THREE.Vector3): ChessSquare | null {
     const squareSize = 1; // must match your modeled board scale
 
     const halfBoard = 4 * squareSize;
@@ -19,5 +22,5 @@ export function getBoardSquareFromCoords(point: THREE.Vector3): string | null {
     const file = String.fromCharCode('h'.charCodeAt(0) - fileIndex);
     const rank = (rankIndex + 1).toString();
 
-    return `${file}${rank}`;
+    return `${file}${rank}` as ChessSquare;
 }
