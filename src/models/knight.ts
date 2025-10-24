@@ -1,13 +1,14 @@
 import {Piece} from "./piece.ts";
 import {ModelName} from "../types/model-name.ts";
 import {ColorType} from "../types/color-type.ts";
+import type {ChessPos} from "../types/chess-pos.ts";
 
 export class Knight extends Piece{
-    constructor(color: ColorType) {
+    constructor(color: ColorType, pos: ChessPos) {
         if (color == ColorType.BLACK) {
-            super(ModelName.BLACK_KNIGHT, color);
+            super(ModelName.BLACK_KNIGHT, color, pos);
         } else {
-            super(ModelName.WHITE_KNIGHT, color);
+            super(ModelName.WHITE_KNIGHT, color, pos);
         }
     }
 }

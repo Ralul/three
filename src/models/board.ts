@@ -3,10 +3,7 @@ import * as THREE from "three";
 import {ModelName} from "../types/model-name.ts";
 import {ModelLoader} from "../utils/model-loader.ts";
 import type {Piece} from "./piece.ts";
-
-const gridInterval: number = 1;
-const gridOffsetX: number = -3.465;
-const gridOffsetZ: number = -3.530;
+import type {ChessPos} from "../types/chess-pos.ts";
 
 export class Board {
     private _mesh = new THREE.Object3D();
@@ -19,9 +16,9 @@ export class Board {
 
     }
 
-    public setPiece(piece: Piece, row: number, col: number) : void {
-        this._grid[row][col] = piece;
-        piece.setPosition(row * gridInterval + gridOffsetX, 0, col * gridInterval + gridOffsetZ)
+    public setPiece(piece: Piece, pos: ChessPos) : void {
+        this._grid[pos.row][pos.col] = piece;
+        piece.setPosition(pos)
     }
 
     public async load(): Promise<void> {
@@ -48,11 +45,23 @@ export class Board {
         return pieces;
     }
 
-    public getPieceByPositon(row: number, col: number) {
-        return this._grid[row][col];
+    public getPieceByPositon(pos: ChessPos) {
+        return this._grid[pos.row][pos.col];
     }
 
-    public movePiece(): void {
+    public movePiece(startPos: ChessPos, endPos: ChessPos): void {
+        let opponentPiece = this._grid[endPos.row][endPos.col]
+
+        if (opponentPiece) {
+            opponentPiece.mesh.clear()
+        }
+
+        const startPiece = this._grid[startPos.row][startPos.col]
+        if (startPiece) {
+            this.setPiece(startPiece, endPos)
+        }
+
+        this._grid[startPos.row][startPos.col] = null
 
     }
 

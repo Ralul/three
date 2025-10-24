@@ -2,17 +2,21 @@ import * as THREE from 'three';
 import { ModelLoader } from '../utils/model-loader';
 import { ModelName } from '../types/model-name.ts';
 import {ColorType} from "../types/color-type.ts";
+import type {ChessPos} from "../types/chess-pos.ts";
+import {GRID_INTERVAL, GRID_OFFSET_X, GRID_OFFSET_Z} from "../const/space-offsets.ts";
 
 export class Piece {
-    private _mesh: THREE.Object3D;
-    private _modelName: ModelName;
+    private readonly _mesh: THREE.Object3D;
+    private readonly _modelName: ModelName;
     private _isSelected = false;
-    private _color: ColorType;
+    private readonly _color: ColorType;
+    private _pos: ChessPos;
 
-    constructor(modelName: ModelName, color: ColorType) {
+    constructor(modelName: ModelName, color: ColorType, pos: ChessPos) {
         this._modelName = modelName;
         this._mesh = new THREE.Object3D();
         this._color = color;
+        this._pos = pos;
     }
 
     public get mesh(): THREE.Object3D {
@@ -35,8 +39,9 @@ export class Piece {
     /**
      * Set the position of this piece on the board.
      */
-    public setPosition(x: number, y: number, z: number): void {
-        this._mesh.position.set(x, y, z);
+    public setPosition(pos: ChessPos): void {
+         this._pos = pos;
+        this._mesh.position.set(pos.row * GRID_INTERVAL + GRID_OFFSET_X, 0, pos.col * GRID_INTERVAL + GRID_OFFSET_Z);
     }
 
     /**
@@ -57,12 +62,15 @@ export class Piece {
         }
     }
 
-
     get isSelected(): boolean {
         return this._isSelected;
     }
 
     get color(): ColorType {
         return this._color;
+    }
+
+    get pos(): ChessPos {
+        return this._pos;
     }
 }

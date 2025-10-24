@@ -40,27 +40,28 @@ export class FenLoader {
                 const isWhite = char === char.toUpperCase();
                 const color = isWhite ? ColorType.WHITE : ColorType.BLACK;
                 const symbol = char.toLowerCase();
+                const pos = {row, col}
 
                 let piece: Piece | null = null;
 
                 switch (symbol) {
                     case "p":
-                        piece = new Pawn(color);
+                        piece = new Pawn(color, pos);
                         break;
                     case "n":
-                        piece = new Knight(color);
+                        piece = new Knight(color, pos);
                         break;
                     case "b":
-                        piece = new Bishop(color);
+                        piece = new Bishop(color, pos);
                         break;
                     case "r":
-                        piece = new Rook(color);
+                        piece = new Rook(color, pos);
                         break;
                     case "q":
-                        piece = new Queen(color);
+                        piece = new Queen(color, pos);
                         break;
                     case "k":
-                        piece = new King(color);
+                        piece = new King(color, pos);
                         break;
                     default:
                         console.warn(`Unrecognized FEN character: '${char}'`);
@@ -69,7 +70,7 @@ export class FenLoader {
 
                 if (piece) {
                     await piece.load();
-                    board.setPiece(piece, row, col);
+                    board.setPiece(piece, {row, col});
                     scene.add(piece.mesh);
                 }
                 col++;

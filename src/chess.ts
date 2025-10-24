@@ -4,7 +4,8 @@ import {ModelName} from './types/model-name.ts';
 import {Board} from "./models/board.ts";
 import {AssetLoader} from "./utils/asset-loader.ts";
 import {getBoardSquareFromCoords} from "./utils/board-mapper.ts";
-import {fromChessSquare, toChessSquare} from "./utils/chess-coordinate-mapper.ts";
+import {fromChessSquare} from "./utils/chess-coordinate-mapper.ts";
+import {GameManager} from "./game-manger.ts";
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xc6b7a4);
@@ -82,8 +83,11 @@ await AssetLoader.loadAll(
     modelEntries,
     board,
     scene,
-    "r7/8/8/8/8/8/8/8"
+    "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
 );
+
+const gameManger = new GameManager(board);
+
 
 // --- SETUP FOR CLICK DETECTION ---
 const raycaster = new THREE.Raycaster();
@@ -105,9 +109,10 @@ const boardSize = 8;
 const squareSize = 1;
 const boardPlane = new THREE.Mesh(
     new THREE.PlaneGeometry(boardSize * squareSize, boardSize * squareSize),
-    new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0 }) // invisible
+    new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.0}) // invisible
 );
 boardPlane.rotation.x = -Math.PI / 2; // make it horizontal
+boardPlane.position.y = 0.3
 scene.add(boardPlane);
 
 window.addEventListener('click', (event) => {
@@ -124,40 +129,35 @@ window.addEventListener('click', (event) => {
         console.log(boardSquare)
         if (boardSquare !== null) {
             const pos = fromChessSquare(boardSquare)
-            console.log(pos)
-            console.log(board.getPieceByPositon(pos.row, pos.col));
-            console.log(toChessSquare(pos.row, pos.col));
+            gameManger.userClick(pos)
         }
     }
 });
 
 // Handle click
-//window.addEventListener('click', (event) => {
-//    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-//    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-//
-//    raycaster.setFromCamera(mouse, camera);
-//    const intersects = raycaster.intersectObjects(clickableMeshes, true);
-//
-//    if (intersects.length > 0) {
-//        const firstHitObject = intersects[0].object;
-//
-//        let current: THREE.Object3D | null = firstHitObject;
-//        while (current && !current.userData.piece) {
-//            current = current.parent;
-//        }
-//
-//        const piece = current?.userData.piece;
-//        if (piece) {
-//            console.log('Clicked on piece:', piece);
-//            console.log('Piece type:', piece.constructor.name);
-//        } else {
-//            console.log('Hit something with no piece data.');
-//        }
-//    } else {
-//        console.log('Clicked on empty space.');
-//    }
-//});
+window.addEventListener('click', (event) => {
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, camera);
+    const intersects = raycaster.intersectObjects(clickableMeshes, true);
+
+    if (intersects.length > 0) {
+        const firstHitObject = intersects[0].object;
+
+        let current: THREE.Object3D | null = firstHitObject;
+        while (current && !current.userData.piece) {
+            current = current.parent;
+        }
+
+        const piece = current?.userData.piece;
+        if (piece) {
+            gameManger.userClick(piece.pos)
+        }
+    } else {
+        console.log('Clicked on empty space.');
+    }
+});
 
 // Resize
 window.addEventListener('resize', () => {

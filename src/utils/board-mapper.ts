@@ -1,4 +1,4 @@
-import type {ChessSquare} from "../types/chess-position.ts";
+import type {ChessSquare} from "../types/chess-square.ts";
 import * as THREE from 'three';
 
 /**
