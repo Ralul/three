@@ -11,10 +11,19 @@ export class GameManager {
     }
 
     public userClick(pos: ChessPos) {
-        if (this.startPos === null) {
+        if (this.startPos === null && this.board.getPiece(pos) !== null) {
             this.startPos = pos;
             return;
         }
+
+        if (this.startPos === null) {
+            return;
+        }
+
+        if (this.startPos === pos) {
+            return;
+        }
+
         this.endPos = pos;
 
         this.board.movePiece(this.startPos, this.endPos);

@@ -21,6 +21,10 @@ export class Board {
         piece.setPosition(pos)
     }
 
+    public getPiece(pos: ChessPos) : Piece | null {
+        return this._grid[pos.row][pos.col];
+    }
+
     public async load(): Promise<void> {
         this._mesh = await ModelLoader.getModelClone(this._modelName);
     }

@@ -88,7 +88,6 @@ await AssetLoader.loadAll(
 
 const gameManger = new GameManager(board);
 
-
 // --- SETUP FOR CLICK DETECTION ---
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
@@ -115,35 +114,23 @@ boardPlane.rotation.x = -Math.PI / 2; // make it horizontal
 boardPlane.position.y = 0.3
 scene.add(boardPlane);
 
-window.addEventListener('click', (event) => {
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-    raycaster.setFromCamera(mouse, camera);
-
-    const intersects = raycaster.intersectObject(boardPlane, false);
-
-    if (intersects.length > 0) {
-        const point = intersects[0].point; // intersection point on the plane
-        const boardSquare = getBoardSquareFromCoords(point);
-        console.log(boardSquare)
-        if (boardSquare !== null) {
-            const pos = fromChessSquare(boardSquare)
-            gameManger.userClick(pos)
-        }
-    }
-});
 
 // Handle click
 window.addEventListener('click', (event) => {
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
+    const clickable = [...clickableMeshes, boardPlane]
+
     raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(clickableMeshes, true);
+    const intersects = raycaster.intersectObjects(clickable, true);
 
     if (intersects.length > 0) {
+
         const firstHitObject = intersects[0].object;
+
+        const point = intersects[0].point; // intersection point on the plane
+        const boardSquare = getBoardSquareFromCoords(point);
 
         let current: THREE.Object3D | null = firstHitObject;
         while (current && !current.userData.piece) {
@@ -153,6 +140,10 @@ window.addEventListener('click', (event) => {
         const piece = current?.userData.piece;
         if (piece) {
             gameManger.userClick(piece.pos)
+        }
+        if (boardSquare !== null) {
+            const pos = fromChessSquare(boardSquare)
+            gameManger.userClick(pos)
         }
     } else {
         console.log('Clicked on empty space.');
