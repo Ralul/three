@@ -55,11 +55,27 @@ export class Piece {
     /**
      * Optional — you can add highlight behavior or rotation for animation loops.
      */
-    public update(deltaTime: number): void {
-        if (this._isSelected) {
-            // e.g. make it spin slightly
-            this._mesh.rotation.y += Math.PI * deltaTime;
-        }
+    public update(): void {
+        this._mesh.traverse((child) => {
+            if ((child as THREE.Mesh).isMesh) {
+                const mat = (child as THREE.Mesh).material as THREE.MeshStandardMaterial;
+
+                if (this._isSelected) {
+                    // Add highlight pulse
+                    const intensity = 0.5 + Math.sin(Date.now() * 0.005) * 0.25;
+                    mat.emissiveIntensity = intensity;
+                    mat.emissive.setHex(0xffff44); // yellowish highlight
+                } else {
+                    // Reset to default (no emissive color)
+                    mat.emissiveIntensity = 0;
+                    mat.emissive.setHex(0x000000);
+                }
+            }
+        });
+    }
+
+    public setSelected(isSelected: boolean): void {
+        this._isSelected = isSelected;
     }
 
     get isSelected(): boolean {

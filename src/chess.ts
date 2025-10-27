@@ -98,11 +98,14 @@ const clickableMeshes: THREE.Object3D[] = board.getAllPieces().map((p) => p.mesh
 function animate() {
     requestAnimationFrame(animate);
 
+    board.getAllPieces().forEach((piece) => {
+        piece.update();
+    });
+
     controls.update();
     renderer.render(scene, camera);
 }
 animate();
-
 
 const boardSize = 8;
 const squareSize = 1;
@@ -113,7 +116,6 @@ const boardPlane = new THREE.Mesh(
 boardPlane.rotation.x = -Math.PI / 2; // make it horizontal
 boardPlane.position.y = 0.3
 scene.add(boardPlane);
-
 
 // Handle click
 window.addEventListener('click', (event) => {
@@ -140,13 +142,12 @@ window.addEventListener('click', (event) => {
         const piece = current?.userData.piece;
         if (piece) {
             gameManger.userClick(piece.pos)
-        }
-        if (boardSquare !== null) {
+        } else if (boardSquare !== null) {
             const pos = fromChessSquare(boardSquare)
             gameManger.userClick(pos)
         }
     } else {
-        console.log('Clicked on empty space.');
+        gameManger.reset()
     }
 });
 

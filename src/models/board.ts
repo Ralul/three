@@ -4,6 +4,7 @@ import {ModelName} from "../types/model-name.ts";
 import {ModelLoader} from "../utils/model-loader.ts";
 import type {Piece} from "./piece.ts";
 import type {ChessPos} from "../types/chess-pos.ts";
+import {BoardHighlighter} from "./board-highlighter.ts";
 
 export class Board {
     private _mesh = new THREE.Object3D();
@@ -12,8 +13,11 @@ export class Board {
         new Array(8).fill(null)
     );
 
-    constructor() {
+    private _highlighter: BoardHighlighter;
 
+    constructor() {
+        this._highlighter = new BoardHighlighter();
+        this._mesh.add(this._highlighter.mesh); // Attach to board mesh
     }
 
     public setPiece(piece: Piece, pos: ChessPos) : void {
@@ -35,6 +39,10 @@ export class Board {
 
     get grid(): (Piece | null) [][] {
         return this._grid;
+    }
+
+    get highlighter(): BoardHighlighter {
+        return this._highlighter;
     }
 
     public getAllPieces(): Piece[] {
