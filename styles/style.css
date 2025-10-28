@@ -9,7 +9,7 @@ html, body {
 /* Header styles */
 header {
     background-color: #d9d9d9;
-    height: 5vh;
+    height: 10vh;
     display: grid;
     grid-template-columns: 80px 1fr 80px;
     position: sticky;
@@ -20,9 +20,31 @@ header .logo {
     grid-column-start: 1;
 }
 
-header .account {
-    grid-column-start: 3;
+header .menu {
+    grid-column-start: 2;
+    align-self: center;
+    justify-self: center;
 }
+
+.menu {
+    max-width: 1500px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.menu-link {
+    font-size: 20px;
+    text-decoration: none;
+    color: #000000;
+}
+
+.menu-link:hover {
+    text-decoration: underline;
+}
+
+
 
 .icon {
     display: flex;
@@ -33,6 +55,98 @@ header .account {
 .icon a img {
     height: 4vh;
 }
+
+.menu a {
+    text-decoration: none;
+    color: #000000;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.menu {
+    display: flex;
+}
+
+/* Hamburger icon */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 6px;
+}
+
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background: #000000;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+/* Modal overlay for hamburger menu */
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 999;
+}
+
+.menu-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+    }
+
+    /* Hide menu initially */
+    .menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        text-align: center;
+        background: #d9d9d9;
+        position: absolute;
+        top: 60px;
+        left: 0;
+    }
+
+    .menu-link {
+        padding-bottom: 10px;
+    }
+
+    .menu.show {
+        display: flex;
+        gap: 10px;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+}
+
+/* Optional: animate the hamburger to "X" */
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translateY(13px);
+}
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translateY(-13px);
+}
+
 
 /* Main container styles */
 .background {

@@ -15,12 +15,24 @@
             <img src="/public/logo.png" alt="logo" />
         </a>
     </div>
-    <div class="icon account">
-        <a href="index.html" class="account">
-            <img src="/public/account.png" alt="logo" />
-        </a>
+
+    <!-- Hamburger icon -->
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <!-- The menu -->
+    <div class="menu">
+        <a href="index.html" class="menu-link">Statistics</a>
+        <a href="index.html" class="menu-link">Rules</a>
+        <a href="index.html" class="menu-link">Features</a>
     </div>
 </header>
+
+<div class="menu-overlay" id="menu-overlay"></div>
+
 <div class="background">
     <main class="main">
         <h1>Retro PC Chess</h1>
@@ -48,4 +60,26 @@
     </div>
 </footer>
 </body>
+<script>
+    const hamburger = document.getElementById('hamburger');
+    const menu = document.querySelector('.menu');
+    const overlay = document.getElementById('menu-overlay');
+
+    function toggleMenu() {
+        const isOpen = hamburger.classList.toggle('active');
+        menu.classList.toggle('show', isOpen);
+        overlay.classList.toggle('show', isOpen);
+        hamburger.setAttribute('aria-expanded', isOpen);
+    }
+
+    hamburger.addEventListener('click', toggleMenu);
+
+    // Clicking outside the menu or overlay closes it
+    overlay.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        menu.classList.remove('show');
+        overlay.classList.remove('show');
+        hamburger.setAttribute('aria-expanded', 'false');
+    });
+</script>
 </html>
