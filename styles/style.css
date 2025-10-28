@@ -162,7 +162,7 @@ header .menu {
     min-height: 100%; /* ensures green background fills vertically */
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: start;
 }
 
 /* Sections */
@@ -284,6 +284,21 @@ footer {
     text-decoration: underline;
 }
 
+
+/* Impress */
+.impress {
+    text-align: left;
+}
+
+.address {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.contact {
+    margin-top: 0;
+    margin-bottom: 0;
+}
 
 
 
