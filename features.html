@@ -35,22 +35,18 @@
 
 <div class="background">
     <main class="main">
-        <h1>Retro PC Chess</h1>
-        <p>
-            Experience classic chess in a modern 3D world — built with Three.js and TypeScript, right in your browser.
+        <h1>How it works</h1>
+        <p class="ThreeJS-text features-text">
+            <img src="/public/three-js.svg" alt="Three.JS logo" class="ThreeJS-logo"/>
+            <a href="https://github.com/DefinitelyTyped/DefinitelyTyped">Three.js</a> is the foundation of the 3D environment in this project. <br> It provides a high‑level interface to the WebGL API, making it possible to create, light, and animate fully interactive 3D scenes directly in the browser without external plugins.<br> In the chess game, Three.js handles everything from modeling the pieces and rendering the board to setting up the virtual camera, lighting, and shadows.<br> Thanks to its object‑oriented scene structure, I can efficiently manage materials, textures, and mesh hierarchies—allowing realistic graphics while maintaining smooth frame rates even on lightweight devices.
         </p>
-        <section class="game">
-            <a href="chess.html">
-                <img src="/public/chess.png" alt="Image from game" class="chess-game"/>
-                <img src="/public/play.png" alt="Play button" class="play-button" />
-            </a>
-        </section>
 
-        <section class="features">
-            <a href="chess.html">
-                <p>Want to peek behind the scenes? See what powers the 3D magic.</p>
-            </a>
-        </section>
+        <p class="TS-text features-text">
+            <img src="public/ts.svg" alt="TypeScript logo" class="TS-logo"/>
+            TypeScript forms the backbone of the game’s logic and architecture.<br> It extends JavaScript with static typing, which helps catch errors early and makes complex systems—like move validation, AI decision trees, and real‑time game state tracking—more predictable and robust.<br> The strong type system also ensures clean modularity: each component (board, piece, player, and renderer) is easier to test and maintain.<br> TypeScript’s modern tooling and integration with editors like VS Code make the development experience smoother and the codebase more scalable for future features such as multiplayer or visual themes.
+        </p>
+
+
     </main>
 </div>
 <footer>

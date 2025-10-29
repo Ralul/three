@@ -8,12 +8,14 @@ html, body {
 
 /* Header styles */
 header {
+    height: 70px;
     background-color: #d9d9d9;
-    height: 10vh;
     display: grid;
     grid-template-columns: 80px 1fr 80px;
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
+    width: 100%;
     z-index: 1000;
 }
 header .logo {
@@ -44,8 +46,6 @@ header .menu {
     text-decoration: underline;
 }
 
-
-
 .icon {
     display: flex;
     align-items: center;
@@ -53,7 +53,7 @@ header .menu {
 }
 
 .icon a img {
-    height: 4vh;
+    height: 50px;
 }
 
 .menu a {
@@ -101,41 +101,6 @@ header .menu {
     visibility: visible;
 }
 
-/* --- Responsive --- */
-@media (max-width: 768px) {
-    header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem 2rem;
-    }
-
-    /* Hide menu initially */
-    .menu {
-        display: none;
-        flex-direction: column;
-        width: 100%;
-        text-align: center;
-        background: #d9d9d9;
-        position: absolute;
-        top: 60px;
-        left: 0;
-    }
-
-    .menu-link {
-        padding-bottom: 10px;
-    }
-
-    .menu.show {
-        display: flex;
-        gap: 10px;
-    }
-
-    .hamburger {
-        display: flex;
-    }
-}
-
 /* Optional: animate the hamburger to "X" */
 .hamburger.active span:nth-child(1) {
     transform: rotate(45deg) translateY(13px);
@@ -156,6 +121,7 @@ header .menu {
 }
 
 .main {
+    margin-top: 70px;
     background: #1f6021;
     width: 80vw;
     max-width: 1500px;
@@ -166,7 +132,6 @@ header .menu {
 }
 
 /* Sections */
-
 main h1 {
     font-size: 40px;
     text-align: center;
@@ -254,14 +219,10 @@ main section {
     animation: gradientShift 5s ease infinite;
 }
 
-
-
-
-
 /* Footer Styles */
 footer {
     background-color: #d9d9d9;
-    height: 20vh;
+    padding-bottom: 5vw;
 }
 
 .links {
@@ -287,6 +248,7 @@ footer {
 
 /* Impress */
 .impress {
+    font-size: 24px;
     text-align: left;
 }
 
@@ -300,6 +262,173 @@ footer {
     margin-bottom: 0;
 }
 
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .main {
+        margin-top: 70px;
+        width: 100%;
+        margin-right: 2vw;
+        margin-left: 2vw;
+    }
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+    }
+
+    /* Hide menu initially */
+    .menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        text-align: center;
+        background: #d9d9d9;
+        position: absolute;
+        top: 87px;
+        left: 0;
+        right: 64px;
+    }
+
+    .menu-link {
+        padding-bottom: 10px;
+    }
+
+    .menu.show {
+        display: flex;
+        gap: 10px;
+    }
+
+    .hamburger {
+        position: relative;
+        left: -80px;
+        display: flex;
+    }
+
+    .main {
+        margin-top: 100px;
+    }
+}
+
+/* Features Site */
+
+.features-text {
+    font-size: x-large;
+}
+
+.ThreeJS-logo {
+    float: left;
+    width: 40%;
+}
+
+.ThreeJS-text {
+    text-align: left;
+}
+
+.TS-logo {
+    float: right;
+    width: 40%;
+}
+
+.TS-text {
+    text-align: left;
+}
+
+@media (max-width: 768px) {
+    .features-text {
+        font-size: large;
+    }
+
+    .ThreeJS-logo {
+        margin-bottom: 10px;
+        background: #FFFFFF;
+        border-radius: 25px;
+        width: 100%;
+    }
+
+    .TS-logo {
+        margin-bottom: 10px;
+        border-radius: 25px;
+        width: 100%;
+    }
+}
 
 
+/* Contact Site */
+.section-contact {
+    width: 100%;
+}
+
+.contact-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.input {
+    border-radius: 5px;
+    border: none;
+}
+
+.contact-label {
+    width: 50%;
+    color: white;
+}
+
+.contact-email {
+    height: 30px;
+    width: 50%;
+    margin-bottom: 10px;
+}
+
+.contact-username {
+    height: 30px;
+    width: 50%;
+    margin-bottom: 10px;
+}
+
+.contact-message {
+    width: 50%;
+    margin-bottom: 10px;
+}
+
+.submit-button {
+    background: #ffffff;
+    width: 50%;
+    color: #000000;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+    margin-bottom: 30px;
+}
+
+@media (max-width: 768px) {
+    .contact-label {
+        width: 90%;
+    }
+
+    .contact-email {
+        width: 90%;
+    }
+
+    .contact-username {
+        width: 90%;
+    }
+
+    .contact-message {
+        width: 90%;
+    }
+
+    .submit-button {
+        width: 90%;
+    }
+}
 

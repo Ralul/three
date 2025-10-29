@@ -35,22 +35,23 @@
 
 <div class="background">
     <main class="main">
-        <h1>Retro PC Chess</h1>
-        <p>
-            Experience classic chess in a modern 3D world — built with Three.js and TypeScript, right in your browser.
-        </p>
-        <section class="game">
-            <a href="chess.html">
-                <img src="/public/chess.png" alt="Image from game" class="chess-game"/>
-                <img src="/public/play.png" alt="Play button" class="play-button" />
-            </a>
-        </section>
-
-        <section class="features">
-            <a href="chess.html">
-                <p>Want to peek behind the scenes? See what powers the 3D magic.</p>
-            </a>
-        </section>
+        <h1>Contact</h1>
+            <form class="contact-form">
+                <label for="femail" class="contact-label">E-Mail:</label>
+                <br>
+                <input type="email" id="femail" name="femail" class="input contact-email">
+                <br>
+                <label for="fusername" class="contact-label">Username:</label>
+                <br>
+                <input type="text" id="fusername" name="fusername" class="input contact-username">
+                <br>
+                <label for="fmessage" class="contact-label">Message:</label>
+                <br>
+                <textarea id="fmessage" name="fmessage" class="input contact-message" rows="10" cols="50">
+                </textarea>
+                <br>
+                <button class="submit-button" type="submit">Submit</button>
+            </form>
     </main>
 </div>
 <footer>
