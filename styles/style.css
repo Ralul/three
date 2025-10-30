@@ -139,9 +139,15 @@ main h1 {
 }
 
 h2 {
-    font-size: 30px;
+    font-size: 35px;
     margin-bottom: 0;
     text-align: center;
+    color: #FFFFFF;
+}
+
+h3 {
+    font-size: 30px;
+    margin-bottom: 0;
     color: #FFFFFF;
 }
 
@@ -503,3 +509,51 @@ thead {
 }
 
 /* rules */
+.rules-text {
+    font-size: large;
+    margin: 0;
+    text-align: left;
+}
+.rules-list {
+    font-size: large;
+    text-align: left;
+    color: white;
+}
+
+.rule-article {
+    margin-bottom: 10px;
+    display: grid;
+    grid-template-columns: 1fr 400px;
+}
+
+.rule-div {
+    grid-column-start: 1;
+}
+
+.movement-picture {
+    margin-left: 5px;
+    padding-top: 50px;
+    width: 100%;
+}
+
+@media (max-width: 1300px) {
+    .rule-article {
+        grid-template-columns: 1fr 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .rule-article {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .movement-picture {
+        padding-top: 0;
+        align-self: center;
+        height: 200px;
+        width: 200px;
+    }
+
+}
+
