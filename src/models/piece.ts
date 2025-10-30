@@ -34,6 +34,7 @@ export class Piece {
         const model = await ModelLoader.getModelClone(this._modelName);
         this._mesh.userData.piece = this
         this._mesh.add(model);
+        this._mesh.rotation.y = Math.PI;
     }
 
     /**

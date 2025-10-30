@@ -24,7 +24,7 @@ export class FenLoader {
         }
 
         for (let row = 0; row < 8; row++) {
-            const rank = rows[row];
+            const rank = rows[7 - row];
             let col = 0;
 
             for (const char of rank) {

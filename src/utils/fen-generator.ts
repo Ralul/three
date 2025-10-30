@@ -1,7 +1,7 @@
-import type { Board } from "../models/board.ts";
-import type { Piece } from "../models/piece.ts";
-import { ColorType } from "../types/color-type.ts";
-import { ModelName } from "../types/model-name.ts";
+import type {Board} from "../models/board.ts";
+import type {Piece} from "../models/piece.ts";
+import {ColorType} from "../types/color-type.ts";
+import {ModelName} from "../types/model-name.ts";
 
 /**
  * Utility class for converting the current board state into
@@ -10,10 +10,10 @@ import { ModelName } from "../types/model-name.ts";
  * Example output: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
  */
 export class FenGenerator {
-    public static toFen(board: Board): string {
+    public static toFen(board: Board, activeColor: ColorType): string {
         const rows: string[] = [];
 
-        for (let row = 0; row < 8; row++) {
+        for (let row = 7; row >= 0; row--) {
             let fenRow = "";
             let emptyCount = 0;
 
@@ -43,7 +43,9 @@ export class FenGenerator {
             rows.push(fenRow);
         }
 
-        return rows.join("/");
+        const x = `${rows.join("/")} ${activeColor === ColorType.WHITE ? "w" : "b"} KQkq - 0 1`;
+        console.log(x)
+        return x
     }
 
     /**
