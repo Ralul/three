@@ -382,7 +382,7 @@ footer {
 }
 
 .form-group {
-    width: 100%;
+    width: 50%;
 }
 
 .input {
@@ -391,25 +391,25 @@ footer {
 }
 
 .contact-label {
-    width: 50%;
+    width: 100%;
     color: white;
     font-size: large;
 }
 
 .contact-email {
     height: 30px;
-    width: 50%;
+    width: 100%;
     margin-bottom: 20px;
 }
 
 .contact-username {
     height: 30px;
-    width: 50%;
+    width: 100%;
     margin-bottom: 20px;
 }
 
 .contact-message {
-    width: 50%;
+    width: 100%;
     margin-bottom: 20px;
 }
 
@@ -442,19 +442,7 @@ footer {
 }
 
 @media (max-width: 768px) {
-    .contact-label {
-        width: 90%;
-    }
-
-    .contact-email {
-        width: 90%;
-    }
-
-    .contact-username {
-        width: 90%;
-    }
-
-    .contact-message {
+    .form-group {
         width: 90%;
     }
 
@@ -571,6 +559,117 @@ thead {
         height: 200px;
         width: 200px;
     }
-
 }
 
+/* Slideshow Styles */
+.pieces-slider {
+    align-self: center;
+    position: relative;
+    width: 80%;
+    max-width: 800px;
+    margin: 2rem auto;
+    border-radius: 16px;
+    padding: 2rem;
+}
+
+.slides {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.slide:first-child {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Navigation buttons */
+.nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    font-size: 24px;
+    font-weight: bold;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10;
+    color: #333;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.nav:hover {
+    background: #ffffff;
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.nav:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.prev {
+    left: 15px;
+}
+
+.next {
+    right: 15px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .pieces-slider {
+        margin: 1rem;
+        padding: 1rem;
+    }
+
+    .slides {
+        height: 300px;
+    }
+
+    .nav {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+
+    .prev {
+        left: 10px;
+    }
+
+    .next {
+        right: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .slides {
+        height: 250px;
+    }
+
+    .nav {
+        width: 35px;
+        height: 35px;
+        font-size: 18px;
+    }
+}

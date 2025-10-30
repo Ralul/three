@@ -127,9 +127,19 @@
                 </div>
                 <img src="/public/knight_movement.png" alt="Knight movement" class="knight-movement movement-picture" />
             </article>
+        </section>
+        <section class="pieces-slider">
+            <div class="slides">
+                <canvas id="canvas-bishop" class="slide"></canvas>
+                <canvas id="canvas-king" class="slide"></canvas>
+                <canvas id="canvas-knight" class="slide"></canvas>
+                <canvas id="canvas-pawn" class="slide"></canvas>
+                <canvas id="canvas-queen" class="slide"></canvas>
+                <canvas id="canvas-rook" class="slide"></canvas>
+            </div>
 
-
-
+            <button class="nav prev" aria-label="Previous piece" id="btn-prev">⟨</button>
+            <button class="nav next" aria-label="Next piece" id="btn-next">⟩</button>
         </section>
     </main>
 </div>
@@ -162,4 +172,5 @@
         hamburger.setAttribute('aria-expanded', 'false');
     });
 </script>
+<script type="module" src="/src/rule.ts"></script>
 </html>
