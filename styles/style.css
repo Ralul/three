@@ -138,6 +138,13 @@ main h1 {
     color: #FFFFFF;
 }
 
+h2 {
+    font-size: 30px;
+    margin-bottom: 0;
+    text-align: center;
+    color: #FFFFFF;
+}
+
 main p {
     margin: 3vw 5vh;
 
@@ -376,23 +383,24 @@ footer {
 .contact-label {
     width: 50%;
     color: white;
+    font-size: large;
 }
 
 .contact-email {
     height: 30px;
     width: 50%;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .contact-username {
     height: 30px;
     width: 50%;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .contact-message {
     width: 50%;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .submit-button {
@@ -432,3 +440,66 @@ footer {
     }
 }
 
+/* Statistics */
+
+.section-statistics {
+    width: 80%;
+    align-self: center;
+    display: flex;
+}
+
+table {
+    align-self: center;
+    width: 100%;
+    border-collapse: collapse;
+}
+tr:nth-child(even) {
+    background: #ffffff;
+}
+
+tr:nth-child(odd) {
+    background: #cccccc;
+}
+
+thead {
+    text-align: left;
+}
+
+@media (max-width: 1000px) {
+    /* Hide the traditional table header */
+    thead {
+        display: none;
+    }
+
+    table,
+    tbody,
+    tr,
+    td {
+        display: block;
+    }
+
+    tr {
+        background: #ffffff;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        padding: 0.8rem;
+    }
+
+    td {
+        padding: 0.3rem 0.8rem;
+        text-align: left;
+        border: none;
+        position: relative;
+    }
+
+    /* Label each data value with the corresponding heading */
+    td::before {
+        padding-right: 10px;
+        content: attr(data-label);
+        font-weight: bold;
+        color: #222;
+    }
+}
+
+/* rules */
