@@ -8,6 +8,26 @@
 </head>
 
 <body>
+<!-- Back button -->
+<button id="back-button" class="back-btn">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="m12 19-7-7 7-7"/>
+    <path d="m19 12H5"/>
+  </svg>
+  Back
+</button>
+
+<!-- Loading screen -->
+<div id="loading-screen">
+  <div class="loading-container">
+    <h2>Loading Chess Game</h2>
+    <div class="loading-bar">
+      <div id="loading-progress" class="loading-fill"></div>
+    </div>
+    <div id="loading-text">0%</div>
+  </div>
+</div>
+
 <script type="module" src="/src/chess.ts"></script>
 </body>
 </html>

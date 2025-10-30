@@ -7,6 +7,18 @@ import {getBoardSquareFromCoords} from "./utils/board-mapper.ts";
 import {fromChessSquare} from "./utils/chess-coordinate-mapper.ts";
 import {GameManager} from "./game-manger.ts";
 
+// Loading elements
+const loadingScreen = document.getElementById('loading-screen')!;
+const loadingProgress = document.getElementById('loading-progress')!;
+const loadingText = document.getElementById('loading-text')!;
+const backButton = document.getElementById('back-button')!;
+
+// Setup progress callback
+AssetLoader.setProgressCallback((percent: number) => {
+    loadingProgress.style.width = `${percent}%`;
+    loadingText.textContent = `${Math.round(percent)}%`;
+});
+
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xc6b7a4);
 
@@ -72,88 +84,121 @@ const modelEntries: [string, ModelName][] = [
     ['/models/white_pawn_y.gltf', ModelName.WHITE_PAWN_Y],
     ['/models/white_queen.gltf', ModelName.WHITE_QUEEN],
     ['/models/white_rook.gltf', ModelName.WHITE_ROOK],
-]
+];
 
-// Create Board
-const board = new Board();
-board.setPosition(0,0,0);
-scene.add(board.mesh)
+// Initialize game asynchronously
+async function initGame() {
+    try {
+        // Create Board
+        const board = new Board();
+        board.setPosition(0, 0, 0);
+        scene.add(board.mesh);
 
-await AssetLoader.loadAll(
-    modelEntries,
-    board,
-    scene,
-    "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
-);
+        await AssetLoader.loadAll(
+            modelEntries,
+            board,
+            scene,
+            "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
+        );
 
-const gameManger = new GameManager(board);
+        const gameManger = new GameManager(board);
 
-// --- SETUP FOR CLICK DETECTION ---
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
+        // Setup click detection
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        const clickableMeshes: THREE.Object3D[] = board.getAllPieces().map((p) => p.mesh);
 
-// Keep track of clickable meshes
-const clickableMeshes: THREE.Object3D[] = board.getAllPieces().map((p) => p.mesh);
+        const boardSize = 8;
+        const squareSize = 1;
+        const boardPlane = new THREE.Mesh(
+            new THREE.PlaneGeometry(boardSize * squareSize, boardSize * squareSize),
+            new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.0})
+        );
+        boardPlane.rotation.x = -Math.PI / 2;
+        boardPlane.position.y = 0.3;
+        scene.add(boardPlane);
 
-function animate() {
-    requestAnimationFrame(animate);
+        // Handle click
+        window.addEventListener('click', (event) => {
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-    board.getAllPieces().forEach((piece) => {
-        piece.update();
-    });
+            const clickable = [...clickableMeshes, boardPlane];
 
-    controls.update();
-    renderer.render(scene, camera);
-}
-animate();
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(clickable, true);
 
-const boardSize = 8;
-const squareSize = 1;
-const boardPlane = new THREE.Mesh(
-    new THREE.PlaneGeometry(boardSize * squareSize, boardSize * squareSize),
-    new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.0}) // invisible
-);
-boardPlane.rotation.x = -Math.PI / 2; // make it horizontal
-boardPlane.position.y = 0.3
-scene.add(boardPlane);
+            if (intersects.length > 0) {
+                const firstHitObject = intersects[0].object;
+                const point = intersects[0].point;
+                const boardSquare = getBoardSquareFromCoords(point);
 
-// Handle click
-window.addEventListener('click', (event) => {
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+                let current: THREE.Object3D | null = firstHitObject;
+                while (current && !current.userData.piece) {
+                    current = current.parent;
+                }
 
-    const clickable = [...clickableMeshes, boardPlane]
+                const piece = current?.userData.piece;
+                if (piece) {
+                    gameManger.userClick(piece.pos);
+                } else if (boardSquare !== null) {
+                    const pos = fromChessSquare(boardSquare);
+                    gameManger.userClick(pos);
+                }
+            } else {
+                gameManger.reset();
+            }
+        });
 
-    raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(clickable, true);
+        // Start animation loop
+        function animate() {
+            requestAnimationFrame(animate);
 
-    if (intersects.length > 0) {
+            board.getAllPieces().forEach((piece) => {
+                piece.update();
+            });
 
-        const firstHitObject = intersects[0].object;
-
-        const point = intersects[0].point; // intersection point on the plane
-        const boardSquare = getBoardSquareFromCoords(point);
-
-        let current: THREE.Object3D | null = firstHitObject;
-        while (current && !current.userData.piece) {
-            current = current.parent;
+            controls.update();
+            renderer.render(scene, camera);
         }
+        animate();
 
-        const piece = current?.userData.piece;
-        if (piece) {
-            gameManger.userClick(piece.pos)
-        } else if (boardSquare !== null) {
-            const pos = fromChessSquare(boardSquare)
-            gameManger.userClick(pos)
-        }
-    } else {
-        gameManger.reset()
+        // Hide loading screen
+        hideLoadingScreen();
+
+    } catch (error) {
+        console.error('Failed to initialize game:', error);
+        loadingText.textContent = 'Loading failed!';
     }
-});
+}
 
-// Resize
+function hideLoadingScreen() {
+    // Add fade-out class
+    loadingScreen.classList.add('fade-out');
+
+    // Show canvas
+    renderer.domElement.classList.add('loaded');
+
+    // Remove loading screen from DOM after transition
+    setTimeout(() => {
+        loadingScreen.style.display = 'none';
+    }, 500);
+}
+
+// Resize handler
 window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
+// Add back button click handler
+backButton.addEventListener('click', () => {
+    // You can customize this based on your navigation needs
+    if (confirm('Are you sure you want to go back? Your current game will be lost.')) {
+        window.location.href = "index.html";
+    }
+});
+
+// Start the game
+initGame();
