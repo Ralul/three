@@ -36,22 +36,24 @@
 <div class="background">
     <main class="main">
         <h1>Contact</h1>
-            <form class="contact-form">
+        <form class="contact-form">
+            <div class="form-group">
                 <label for="femail" class="contact-label">E-Mail:</label>
-                <br>
                 <input type="email" id="femail" name="femail" class="input contact-email">
-                <br>
+            </div>
+
+            <div class="form-group">
                 <label for="fusername" class="contact-label">Username:</label>
-                <br>
                 <input type="text" id="fusername" name="fusername" class="input contact-username">
-                <br>
+            </div>
+
+            <div class="form-group">
                 <label for="fmessage" class="contact-label">Message:</label>
-                <br>
-                <textarea id="fmessage" name="fmessage" class="input contact-message" rows="10" cols="50">
-                </textarea>
-                <br>
-                <button class="submit-button" type="submit">Submit</button>
-            </form>
+                <textarea id="fmessage" name="fmessage" class="input contact-message" rows="10"></textarea>
+            </div>
+
+            <button class="submit-button" type="submit">Submit</button>
+        </form>
     </main>
 </div>
 <footer>
@@ -81,6 +83,77 @@
         menu.classList.remove('show');
         overlay.classList.remove('show');
         hamburger.setAttribute('aria-expanded', 'false');
+    });
+
+    // ---------------------------
+    // Form validation logic
+    // ---------------------------
+    const form = document.querySelector('.contact-form');
+    const emailInput = document.getElementById('femail');
+    const usernameInput = document.getElementById('fusername');
+    const messageInput = document.getElementById('fmessage');
+
+    // Create small error message elements
+    function createErrorElement(input) {
+        let error = input.parentNode.querySelector('.error-message');
+        if (!error) {
+            error = document.createElement('div');
+            error.className = 'error-message';
+            input.parentNode.insertBefore(error, input.nextSibling);
+        }
+        return error;
+    }
+
+    // Attach one under each input initially so spacing stays consistent
+    [emailInput, usernameInput, messageInput].forEach((input) => createErrorElement(input));
+
+    form.addEventListener('submit', (event) => {
+        let isValid = true;
+
+        // Helper to set errors
+        function setError(input, message) {
+            const error = createErrorElement(input);
+            if (message) {
+                error.textContent = message;
+                input.classList.add('input-error');
+                isValid = false;
+            } else {
+                error.textContent = '';
+                input.classList.remove('input-error');
+            }
+        }
+
+        // Validate email
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailInput.value.trim()) {
+            setError(emailInput, 'E-mail is required.');
+        } else if (!emailPattern.test(emailInput.value.trim())) {
+            setError(emailInput, 'Please enter a valid e-mail address.');
+        } else {
+            setError(emailInput, '');
+        }
+
+        // Validate username
+        if (!usernameInput.value.trim()) {
+            setError(usernameInput, 'Username is required.');
+        } else if (usernameInput.value.trim().length < 2) {
+            setError(usernameInput, 'Username must be at least 2 characters long.');
+        } else {
+            setError(usernameInput, '');
+        }
+
+        // Validate message
+        if (!messageInput.value.trim()) {
+            setError(messageInput, 'Message cannot be empty.');
+        } else if (messageInput.value.trim().length < 5) {
+            setError(messageInput, 'Message must be at least 5 characters long.');
+        } else {
+            setError(messageInput, '');
+        }
+
+        if (!isValid) {
+            event.preventDefault();
+        }
     });
 </script>
 </html>

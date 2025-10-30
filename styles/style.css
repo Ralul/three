@@ -381,6 +381,10 @@ footer {
     align-items: center;
 }
 
+.form-group {
+    width: 100%;
+}
+
 .input {
     border-radius: 5px;
     border: none;
@@ -422,6 +426,19 @@ footer {
     border-radius: 5px;
     border: none;
     margin-bottom: 30px;
+}
+
+.error-message {
+    color: #ff4c4c;
+    font-size: 0.85rem;
+    margin-top: 4px;
+    margin-bottom: 10px;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.input-error {
+    border: 2px solid #ff4c4c;
+    background-color: #fff4f4;
 }
 
 @media (max-width: 768px) {
